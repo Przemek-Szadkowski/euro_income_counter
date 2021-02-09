@@ -8,6 +8,8 @@ LABEL_FONT = ('Arial', 10, 'normal')
 
 EURO_RATE_2020 = 4.61480
 EURO_RATE_2019 = 4.2585
+EURO_RATE_2018 = 4.3000
+EURO_RATE_2017 = 4.1709
 
 
 class Counter:
@@ -72,6 +74,7 @@ class Counter:
             .grid(column=0, row=self.row + 4, padx=20)
 
         # Top labels
+
         euro_rate = Label(self.scrollable_frame, text='Kurs Euro', fg=TEXT_COLOR, font=LABEL_FONT)\
             .grid(column=1, row=self.row)
 
@@ -103,13 +106,14 @@ class Counter:
             .grid(column=10, row=self.row, padx=10)
 
         # Euro rates labels
+
         euro_rate_2020 = Label(self.scrollable_frame, textvariable='4', text=EURO_RATE_2020, fg=LABEL_COLOR, font=LABEL_FONT)
         euro_rate_2020.grid(column=1, row=self.row + 1, padx=5)
 
         euro_rate_2019 = Label(self.scrollable_frame, text=EURO_RATE_2019, fg=LABEL_COLOR, font=LABEL_FONT) \
             .grid(column=1, row=self.row + 2, padx=5)
 
-        euro_rate_2018 = Label(self.scrollable_frame, text='4,3000', fg=LABEL_COLOR, font=LABEL_FONT) \
+        euro_rate_2018 = Label(self.scrollable_frame, text=EURO_RATE_2018, fg=LABEL_COLOR, font=LABEL_FONT) \
             .grid(column=1, row=self.row + 3, padx=5)
 
         euro_rate_2017 = Label(self.scrollable_frame, text='4,1709', fg=LABEL_COLOR, font=LABEL_FONT) \
@@ -117,117 +121,163 @@ class Counter:
 
         # Year 2020
 
-        # dorobić vary do następnych inputów, dołączyć pozostałe inputy do funkcji, wrzucić pozostałem euro raty jako stałe
+        income_var2020 = StringVar()
+        income_var2020.trace_add("write", lambda name, index, mode, sv=income_var2020: update_income_labels
+        (income_var2020, income_2020_euro, income_2020_euro_thousand, income_2020_euro_thousand_rounded, EURO_RATE_2020))
 
-
-        var1 = StringVar()
-        var1.trace_add("write", lambda name, index, mode, sv=var1: update_income_labels(var1, income_2020_euro, EURO_RATE_2020))
-        income_2020 = Entry(self.scrollable_frame, width=20, textvariable=var1)\
-            .grid(column=2, row=self.row + 1, padx=5, pady=5)
+        income_2020 = Entry(self.scrollable_frame, width=20, textvariable=income_var2020)
+        income_2020.grid(column=2, row=self.row + 1, padx=5, pady=5)
 
         income_2020_euro = Label(self.scrollable_frame, text='0.00', fg=LABEL_COLOR, font=LABEL_FONT)
         income_2020_euro.grid(column=3, row=self.row + 1)
 
-        income_2020_euro_thousand = Label(self.scrollable_frame, text='0.00', fg=LABEL_COLOR, font=LABEL_FONT)\
-            .grid(column=4, row=self.row + 1)
+        income_2020_euro_thousand = Label(self.scrollable_frame, text='0.00', fg=LABEL_COLOR, font=LABEL_FONT)
+        income_2020_euro_thousand.grid(column=4, row=self.row + 1)
 
-        income_2020_euro_thousand_rounded = Label(self.scrollable_frame, text='0.00', fg=LABEL_COLOR, font=LABEL_FONT)\
-            .grid(column=5, row=self.row + 1)
+        income_2020_euro_thousand_rounded = Label(self.scrollable_frame, text='0.00', fg=LABEL_COLOR, font=LABEL_FONT)
+        income_2020_euro_thousand_rounded.grid(column=5, row=self.row + 1)
 
-        balance_2020 = Entry(self.scrollable_frame, width=20).grid(column=6, row=self.row + 1, padx=5, pady=5)
+        balance_var2020 = StringVar()
+        balance_var2020.trace_add("write", lambda name, index, mode, sv=balance_var2020: update_balance_labels
+        (balance_var2020, balance_euro_2020, balance_euro_thousands_2020, balance_euro_thousands_rounded_2020, EURO_RATE_2020))
 
-        balance_euro_2020 = Label(self.scrollable_frame, text='0.00', fg=LABEL_COLOR, font=LABEL_FONT) \
-            .grid(column=7, row=self.row + 1)
+        balance_2020 = Entry(self.scrollable_frame, width=20, textvariable=balance_var2020)
+        balance_2020.grid(column=6, row=self.row + 1, padx=5, pady=5)
 
-        balance_euro_thousands_2020 = Label(self.scrollable_frame, text='0.00', fg=LABEL_COLOR, font=LABEL_FONT) \
-            .grid(column=8, row=self.row + 1)
+        balance_euro_2020 = Label(self.scrollable_frame, text='0.00', fg=LABEL_COLOR, font=LABEL_FONT)
+        balance_euro_2020.grid(column=7, row=self.row + 1)
 
-        balance_euro_thousands_rounded_2020 = Label(self.scrollable_frame, text='0.00', fg=LABEL_COLOR, font=LABEL_FONT) \
-            .grid(column=9, row=self.row + 1)
+        balance_euro_thousands_2020 = Label(self.scrollable_frame, text='0.00', fg=LABEL_COLOR, font=LABEL_FONT)
+        balance_euro_thousands_2020.grid(column=8, row=self.row + 1)
+
+        balance_euro_thousands_rounded_2020 = Label(self.scrollable_frame, text='0.00', fg=LABEL_COLOR, font=LABEL_FONT)
+        balance_euro_thousands_rounded_2020.grid(column=9, row=self.row + 1)
 
         employment_2020 = Entry(self.scrollable_frame, width=20).grid(column=10, row=self.row + 1, padx=5, pady=5)
 
         # Year 2019
 
-        var2 = StringVar()
-        var2.trace_add("write", lambda name, index, mode, sv=var2: update_income_labels(var2, income_2019_euro, EURO_RATE_2019))
+        income_var2019 = StringVar()
+        income_var2019.trace_add("write", lambda name, index, mode, sv=income_var2019: update_income_labels
+        (income_var2019, income_2019_euro, income_2019_euro_thousand, income_2019_euro_thousand_rounded, EURO_RATE_2019))
 
-        income_2019 = Entry(self.scrollable_frame, width=20, textvariable=var2)
+        income_2019 = Entry(self.scrollable_frame, width=20, textvariable=income_var2019)
         income_2019.grid(column=2, row=self.row + 2, padx=5, pady=5)
 
         income_2019_euro = Label(self.scrollable_frame, text='0.00', fg=LABEL_COLOR, font=LABEL_FONT)
         income_2019_euro.grid(column=3, row=self.row + 2)
 
-        income_2019_euro_thousand = Label(self.scrollable_frame, text='0.00', fg=LABEL_COLOR, font=LABEL_FONT) \
-            .grid(column=4, row=self.row + 2)
+        income_2019_euro_thousand = Label(self.scrollable_frame, text='0.00', fg=LABEL_COLOR, font=LABEL_FONT)
+        income_2019_euro_thousand.grid(column=4, row=self.row + 2)
 
-        income_2019_euro_thousand_rounded = Label(self.scrollable_frame, text='0.00', fg=LABEL_COLOR, font=LABEL_FONT) \
-            .grid(column=5, row=self.row + 2)
+        income_2019_euro_thousand_rounded = Label(self.scrollable_frame, text='0.00', fg=LABEL_COLOR, font=LABEL_FONT)
+        income_2019_euro_thousand_rounded.grid(column=5, row=self.row + 2)
 
-        balance_2019 = Entry(self.scrollable_frame, width=20).grid(column=6, row=self.row + 2, padx=5, pady=5)
+        balance_var2019 = StringVar()
+        balance_var2019.trace_add("write", lambda name, index, mode, sv=balance_var2019: update_balance_labels
+        (balance_var2019, balance_euro_2019, balance_euro_thousands_2019, balance_euro_thousands_rounded_2019,
+         EURO_RATE_2019))
 
-        balance_euro_2019 = Label(self.scrollable_frame, text='0.00', fg=LABEL_COLOR, font=LABEL_FONT) \
-            .grid(column=7, row=self.row + 2)
+        balance_2019 = Entry(self.scrollable_frame, width=20, textvariable=balance_var2019)
+        balance_2019.grid(column=6, row=self.row + 2, padx=5, pady=5)
 
-        balance_euro_thousands_2019 = Label(self.scrollable_frame, text='0.00', fg=LABEL_COLOR, font=LABEL_FONT) \
-            .grid(column=8, row=self.row + 2)
+        balance_euro_2019 = Label(self.scrollable_frame, text='0.00', fg=LABEL_COLOR, font=LABEL_FONT)
+        balance_euro_2019.grid(column=7, row=self.row + 2)
 
-        balance_euro_thousands_rounded_2019 = Label(self.scrollable_frame, text='0.00', fg=LABEL_COLOR, font=LABEL_FONT) \
-            .grid(column=9, row=self.row + 2)
+        balance_euro_thousands_2019 = Label(self.scrollable_frame, text='0.00', fg=LABEL_COLOR, font=LABEL_FONT)
+        balance_euro_thousands_2019.grid(column=8, row=self.row + 2)
+
+        balance_euro_thousands_rounded_2019 = Label(self.scrollable_frame, text='0.00', fg=LABEL_COLOR, font=LABEL_FONT)
+        balance_euro_thousands_rounded_2019.grid(column=9, row=self.row + 2)
 
         employment_2019 = Entry(self.scrollable_frame, width=20).grid(column=10, row=self.row + 2, padx=5, pady=5)
 
         # Year 2018
 
-        income_2018 = Entry(self.scrollable_frame, width=20).grid(column=2, row=self.row + 3, padx=5, pady=5)
+        income_var2018 = StringVar()
+        income_var2018.trace_add("write", lambda name, index, mode, sv=income_var2018: update_income_labels
+        (income_var2018, income_2018_euro, income_2018_euro_thousand, income_2018_euro_thousand_rounded, EURO_RATE_2018))
 
-        income_2018_euro = Label(self.scrollable_frame, text='0.00', fg=LABEL_COLOR, font=LABEL_FONT) \
-            .grid(column=3, row=self.row + 3)
+        income_2018 = Entry(self.scrollable_frame, width=20, textvariable=income_var2018)
+        income_2018.grid(column=2, row=self.row + 3, padx=5, pady=5)
 
-        income_2018_euro_thousand = Label(self.scrollable_frame, text='0.00', fg=LABEL_COLOR, font=LABEL_FONT) \
-            .grid(column=4, row=self.row + 3)
+        income_2018_euro = Label(self.scrollable_frame, text='0.00', fg=LABEL_COLOR, font=LABEL_FONT)
+        income_2018_euro.grid(column=3, row=self.row + 3)
 
-        income_2018_euro_thousand_rounded = Label(self.scrollable_frame, text='0.00', fg=LABEL_COLOR, font=LABEL_FONT) \
-            .grid(column=5, row=self.row + 3)
+        income_2018_euro_thousand = Label(self.scrollable_frame, text='0.00', fg=LABEL_COLOR, font=LABEL_FONT)
+        income_2018_euro_thousand.grid(column=4, row=self.row + 3)
 
-        balance_2018 = Entry(self.scrollable_frame, width=20).grid(column=6, row=self.row + 3, padx=5, pady=5)
+        income_2018_euro_thousand_rounded = Label(self.scrollable_frame, text='0.00', fg=LABEL_COLOR, font=LABEL_FONT)
+        income_2018_euro_thousand_rounded.grid(column=5, row=self.row + 3)
 
-        balance_euro_2018 = Label(self.scrollable_frame, text='0.00', fg=LABEL_COLOR, font=LABEL_FONT) \
-            .grid(column=7, row=self.row + 3)
+        balance_var2018 = StringVar()
+        balance_var2018.trace_add("write", lambda name, index, mode, sv=balance_var2018: update_balance_labels
+        (balance_var2018, balance_euro_2018, balance_euro_thousands_2018, balance_euro_thousands_rounded_2018,
+         EURO_RATE_2018))
 
-        balance_euro_thousands_2018 = Label(self.scrollable_frame, text='0.00', fg=LABEL_COLOR, font=LABEL_FONT) \
-            .grid(column=8, row=self.row + 3)
+        balance_2018 = Entry(self.scrollable_frame, width=20, textvariable=balance_var2018)
+        balance_2018.grid(column=6, row=self.row + 3, padx=5, pady=5)
 
-        balance_euro_thousands_rounded_2018 = Label(self.scrollable_frame, text='0.00', fg=LABEL_COLOR, font=LABEL_FONT) \
-            .grid(column=9, row=self.row + 3)
+        balance_euro_2018 = Label(self.scrollable_frame, text='0.00', fg=LABEL_COLOR, font=LABEL_FONT)
+        balance_euro_2018.grid(column=7, row=self.row + 3)
+
+        balance_euro_thousands_2018 = Label(self.scrollable_frame, text='0.00', fg=LABEL_COLOR, font=LABEL_FONT)
+        balance_euro_thousands_2018.grid(column=8, row=self.row + 3)
+
+        balance_euro_thousands_rounded_2018 = Label(self.scrollable_frame, text='0.00', fg=LABEL_COLOR, font=LABEL_FONT)
+        balance_euro_thousands_rounded_2018.grid(column=9, row=self.row + 3)
 
         employment_2018 = Entry(self.scrollable_frame, width=20).grid(column=10, row=self.row + 3, padx=5, pady=5)
 
         # Year 2017
 
-        income_2017 = Entry(self.scrollable_frame, width=20).grid(column=2, row=self.row + 4, padx=5, pady=5)
+        income_var2017 = StringVar()
+        income_var2017.trace_add("write", lambda name, index, mode, sv=income_var2017: update_income_labels
+        (income_var2017, income_2017_euro, income_2017_euro_thousand, income_2017_euro_thousand_rounded, EURO_RATE_2017))
 
-        income_2017_euro = Label(self.scrollable_frame, text='0.00', fg=LABEL_COLOR, font=LABEL_FONT) \
-            .grid(column=3, row=self.row + 4)
+        income_2017 = Entry(self.scrollable_frame, width=20, textvariable=income_var2017)
+        income_2017.grid(column=2, row=self.row + 4, padx=5, pady=5)
 
-        income_2017_euro_thousand = Label(self.scrollable_frame, text='0.00', fg=LABEL_COLOR, font=LABEL_FONT) \
-            .grid(column=4, row=self.row + 4)
+        income_2017_euro = Label(self.scrollable_frame, text='0.00', fg=LABEL_COLOR, font=LABEL_FONT)
+        income_2017_euro.grid(column=3, row=self.row + 4)
 
-        income_2017_euro_thousand_rounded = Label(self.scrollable_frame, text='0.00', fg=LABEL_COLOR, font=LABEL_FONT) \
-            .grid(column=5, row=self.row + 4)
+        income_2017_euro_thousand = Label(self.scrollable_frame, text='0.00', fg=LABEL_COLOR, font=LABEL_FONT)
+        income_2017_euro_thousand.grid(column=4, row=self.row + 4)
 
-        balance_2017 = Entry(self.scrollable_frame, width=20).grid(column=6, row=self.row + 4, padx=5, pady=5)
+        income_2017_euro_thousand_rounded = Label(self.scrollable_frame, text='0.00', fg=LABEL_COLOR, font=LABEL_FONT)
+        income_2017_euro_thousand_rounded.grid(column=5, row=self.row + 4)
 
-        balance_euro_2017 = Label(self.scrollable_frame, text='0.00', fg=LABEL_COLOR, font=LABEL_FONT) \
-            .grid(column=7, row=self.row + 4)
+        balance_var2017 = StringVar()
+        balance_var2017.trace_add("write", lambda name, index, mode, sv=balance_var2017: update_balance_labels
+        (balance_var2017, balance_euro_2017, balance_euro_thousands_2017, balance_euro_thousands_rounded_2017,
+         EURO_RATE_2017))
 
-        balance_euro_thousands_2017 = Label(self.scrollable_frame, text='0.00', fg=LABEL_COLOR, font=LABEL_FONT) \
-            .grid(column=8, row=self.row + 4)
+        balance_2017 = Entry(self.scrollable_frame, width=20, textvariable=balance_var2017)
+        balance_2017.grid(column=6, row=self.row + 4, padx=5, pady=5)
 
-        balance_euro_thousands_rounded_2017 = Label(self.scrollable_frame, text='0.00', fg=LABEL_COLOR, font=LABEL_FONT) \
-            .grid(column=9, row=self.row + 4)
+        balance_euro_2017 = Label(self.scrollable_frame, text='0.00', fg=LABEL_COLOR, font=LABEL_FONT)
+        balance_euro_2017.grid(column=7, row=self.row + 4)
+
+        balance_euro_thousands_2017 = Label(self.scrollable_frame, text='0.00', fg=LABEL_COLOR, font=LABEL_FONT)
+        balance_euro_thousands_2017.grid(column=8, row=self.row + 4)
+
+        balance_euro_thousands_rounded_2017 = Label(self.scrollable_frame, text='0.00', fg=LABEL_COLOR, font=LABEL_FONT)
+        balance_euro_thousands_rounded_2017.grid(column=9, row=self.row + 4)
 
         employment_2017 = Entry(self.scrollable_frame, width=20).grid(column=10, row=self.row + 4, padx=5, pady=5)
 
-        def update_income_labels(s_var, income_euro_input, actual_euro_rate):
-            income_euro_input.config(text=round(float(s_var.get()) * actual_euro_rate, 2))
+        def update_income_labels(s_var, income_euro_input,
+                                 income_euro_thousand_input, income_euro_thousand_rounded_input, actual_euro_rate):
+            """Updates income labels with euro rate calculates"""
+            income_in_euro = round(float(s_var.get()) * actual_euro_rate, 2)
+            income_euro_input.config(text=income_in_euro)
+            income_euro_thousand_input.config(text=income_in_euro / 1000)
+            income_euro_thousand_rounded_input.config(text=round(income_in_euro / 1000, 2))
+
+        def update_balance_labels(s_var, balance_euro_input,
+                                 balance_euro_thousand_input, balance_euro_thousand_rounded_input, actual_euro_rate):
+            """Updates balance labels with euro rate calculates"""
+            balance_in_euro = round(float(s_var.get()) * actual_euro_rate, 2)
+            balance_euro_input.config(text=balance_in_euro)
+            balance_euro_thousand_input.config(text=balance_in_euro / 1000)
+            balance_euro_thousand_rounded_input.config(text=round(balance_in_euro / 1000, 2))
