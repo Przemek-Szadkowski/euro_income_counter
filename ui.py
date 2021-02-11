@@ -2,7 +2,7 @@ from tkinter import *
 
 THEME_COLOR = '#343951'
 TEXT_COLOR = '#343951'
-BUTTON_COLOR = '#EDCD68'
+BUTTON_AND_PERCENT_COLOR = '#EDCD68'
 RESULT_COLOR = '#8A9DFF'
 LABEL_COLOR = '#FA541C'
 LABEL_FONT = ('Arial', 10, 'normal')
@@ -45,7 +45,7 @@ class Counter:
         self.set_item_table()
 
         # Button - add new set of table
-        self.add_button = Button(self.container, text='+', width=10, bg=BUTTON_COLOR, command=self.set_item_table)\
+        self.add_button = Button(self.container, text='+', width=10, bg=BUTTON_AND_PERCENT_COLOR, command=self.set_item_table)\
             .grid(sticky='e', padx=(0, 50), pady=(0, 5))
 
         self.set_result_table()
@@ -59,8 +59,8 @@ class Counter:
             self.added_company = True
         else:
             percent_label = Label(self.scrollable_frame, text='%: ', fg=TEXT_COLOR, font=LABEL_FONT)\
-                .grid(column=0, row=self.row, pady=(10, 0))
-            percent_input = Entry(self.scrollable_frame, width=10).grid(column=1, row=self.row, pady=(40, 0))
+                .grid(column=0, row=self.row, pady=(20, 0))
+            percent_input = Entry(self.scrollable_frame, width=10, bg=BUTTON_AND_PERCENT_COLOR).grid(column=1, row=self.row, pady=(20, 0))
             self.row += 1
 
         # Year labels
