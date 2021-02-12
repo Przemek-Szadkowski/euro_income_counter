@@ -42,6 +42,34 @@ class Counter:
 
         # Ogarnąc ten blok - KONIEC!!!
 
+        self.result = {
+            '2020': {
+                'Kurs Euro': EURO_RATE_2020,
+                'Przychody': 0,
+                'Przychody złoty': 0,
+                'Przychody złoty (tys.)': 0,
+                "Przychody złoty (tys. zaokr.)": 0,
+                'Bilans': 0,
+                'Bilans złoty': 0,
+                'Bilans złoty (tys.)': 0,
+                'Bilans złoty (tys. zaokr.)': 0,
+                'Zatrudnienie': 0,
+            },
+            '2019': {
+                'Kurs Euro': EURO_RATE_2019,
+                'Przychody': 0,
+                'Przychody złoty': 0,
+                'Przychody złoty (tys.)': 0,
+                "Przychody złoty (tys. zaokr.)": 0,
+                'Bilans': 0,
+                'Bilans złoty': 0,
+                'Bilans złoty (tys.)': 0,
+                'Bilans złoty (tys. zaokr.)': 0,
+                'Zatrudnienie': 0,
+            },
+            '2018': None,
+            '2017': None,
+        }
         self.set_item_table()
 
         # Button - add new set of table
@@ -285,6 +313,10 @@ class Counter:
             income_zloty_thousand_input.config(text=income_in_euro / 1000)
             income_zloty_thousand_rounded_input.config(text=round(income_in_euro / 1000, 2))
 
+            # update result dictionary
+            self.result['2020']['Przychody'] = float(s_var.get()) # zamiast roku stałą year przekazana do funkcji
+            print(self.result['2020'])
+
         def update_balance_labels(s_var, balance_zloty_input,
                                   balance_zloty_thousand_input, balance_zloty_thousand_rounded_input, actual_euro_rate):
             """Updates balance labels with euro rate calculates"""
@@ -306,5 +338,54 @@ class Counter:
         bottom_canvas.config(bg=RESULT_COLOR)
         bottom_canvas.grid(sticky='ew')
 
-        # euro_rate_202 = Label(textvariable='4', text=EURO_RATE_2020, fg=LABEL_COLOR, font=LABEL_FONT)
-        # euro_rate_202.grid(sticky='ew')
+        result_year_2020_label = Label(bottom_canvas, text='2020', bg=RESULT_COLOR, font=LABEL_FONT) \
+            .grid(column=0, row=1, padx=5, pady=5)
+
+        result_year_2019_label = Label(bottom_canvas, text='2019', bg=RESULT_COLOR, font=LABEL_FONT) \
+            .grid(column=0, row=2, padx=5, pady=5)
+
+        result_year_2018_label = Label(bottom_canvas, text='2018', bg=RESULT_COLOR, font=LABEL_FONT) \
+            .grid(column=0, row=3, padx=5, pady=5)
+
+        result_year_2017_label = Label(bottom_canvas, text='2017', bg=RESULT_COLOR, font=LABEL_FONT) \
+            .grid(column=0, row=4, padx=5, pady=5)
+
+        result_euro_rate = Label(bottom_canvas, text='Kurs Euro', fg='white', bg=RESULT_COLOR, font=LABEL_FONT) \
+            .grid(column=1, row=0)
+
+        result_income = Label(bottom_canvas, text='Przychody', fg='white', bg=RESULT_COLOR, font=LABEL_FONT) \
+            .grid(column=2, row=0, pady=15)
+
+        result_income_zloty = Label(bottom_canvas, text='Przychody zloty', fg='white', bg=RESULT_COLOR, font=LABEL_FONT) \
+            .grid(column=3, row=0)
+
+        result_income_zloty_thousand = Label(bottom_canvas, text='Przychody zloty (tys.)',
+                                      font=LABEL_FONT, fg='white', bg=RESULT_COLOR, padx=15).grid(column=4, row=0)
+
+        result_income_zloty_thousand_rounded = Label(bottom_canvas, text='Przychody zloty (tys. zaokr.)', fg='white', bg=RESULT_COLOR,
+                                              font=LABEL_FONT).grid(column=5, row=0)
+
+        result_balance = Label(bottom_canvas, text='Bilans', fg='white', bg=RESULT_COLOR, font=LABEL_FONT) \
+            .grid(column=6, row=0)
+
+        result_balance_zloty = Label(bottom_canvas, text='Bilans zloty', fg='white', bg=RESULT_COLOR, font=LABEL_FONT) \
+            .grid(column=7, row=0)
+
+        result_balance_zloty_thousands = Label(bottom_canvas, text='Bilans zloty (tys.)', fg='white', bg=RESULT_COLOR, font=LABEL_FONT)\
+            .grid(column=8, row=0, padx=10)
+
+        result_balance_zloty_thousands_rounded = Label(bottom_canvas, text='Bilans zloty (tys. zaokr.)', fg='white', bg=RESULT_COLOR, font=LABEL_FONT)\
+            .grid(column=9, row=0, padx=10)
+
+        result_employment = Label(bottom_canvas, text='Zatrudnienie', bg=RESULT_COLOR, fg='white', font=LABEL_FONT) \
+            .grid(column=10, row=0, padx=10)
+
+        # 2020
+        # euro_rate_2020 = Label(bottom_canvas, text=EURO_RATE_2020, bg=RESULT_COLOR, fg=LABEL_COLOR, font=LABEL_FONT)
+        # euro_rate_2020.grid(column=1, row=1, padx=5)
+        #
+        # result_income_2020 = Label(bottom_canvas, text=self.result['2020']['Przychody'], bg=RESULT_COLOR, font=LABEL_FONT)
+        # result_income_2020.grid(column=2, row=1, padx=5, pady=5)
+
+        # income_2020_zloty = Label(bottom_canvas, text='0.00', fg=LABEL_COLOR, font=LABEL_FONT)
+        # income_2020_zloty.grid(column=3, row=self.row + 1)
