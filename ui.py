@@ -12,6 +12,11 @@ EURO_RATE_2019 = 4.2585
 EURO_RATE_2018 = 4.3000
 EURO_RATE_2017 = 4.1709
 
+YEAR_2020 = '2020'
+YEAR_2019 = '2019'
+YEAR_2018 = '2018'
+YEAR_2017 = '2017'
+
 
 class Counter:
     def __init__(self):
@@ -313,9 +318,9 @@ class Counter:
             income_zloty_thousand_input.config(text=income_in_euro / 1000)
             income_zloty_thousand_rounded_input.config(text=round(income_in_euro / 1000, 2))
 
-            # update result dictionary
+            # Update result
             self.result['2020']['Przychody'] = float(s_var.get()) # zamiast roku stałą year przekazana do funkcji
-            print(self.result['2020'])
+            self.result_income_2020.config(text=self.result['2020']['Przychody'])#????????????????????????????????
 
         def update_balance_labels(s_var, balance_zloty_input,
                                   balance_zloty_thousand_input, balance_zloty_thousand_rounded_input, actual_euro_rate):
@@ -338,54 +343,178 @@ class Counter:
         bottom_canvas.config(bg=RESULT_COLOR)
         bottom_canvas.grid(sticky='ew')
 
-        result_year_2020_label = Label(bottom_canvas, text='2020', bg=RESULT_COLOR, font=LABEL_FONT) \
+        result_year_2020_label = Label(bottom_canvas, text='2020', fg='white', bg=RESULT_COLOR, font=LABEL_FONT) \
             .grid(column=0, row=1, padx=5, pady=5)
 
-        result_year_2019_label = Label(bottom_canvas, text='2019', bg=RESULT_COLOR, font=LABEL_FONT) \
+        result_year_2019_label = Label(bottom_canvas, text='2019', fg='white', bg=RESULT_COLOR, font=LABEL_FONT) \
             .grid(column=0, row=2, padx=5, pady=5)
 
-        result_year_2018_label = Label(bottom_canvas, text='2018', bg=RESULT_COLOR, font=LABEL_FONT) \
+        result_year_2018_label = Label(bottom_canvas, text='2018', fg='white', bg=RESULT_COLOR, font=LABEL_FONT) \
             .grid(column=0, row=3, padx=5, pady=5)
 
-        result_year_2017_label = Label(bottom_canvas, text='2017', bg=RESULT_COLOR, font=LABEL_FONT) \
+        result_year_2017_label = Label(bottom_canvas, text='2017', fg='white', bg=RESULT_COLOR, font=LABEL_FONT) \
             .grid(column=0, row=4, padx=5, pady=5)
 
         result_euro_rate = Label(bottom_canvas, text='Kurs Euro', fg='white', bg=RESULT_COLOR, font=LABEL_FONT) \
-            .grid(column=1, row=0)
+            .grid(column=1, row=0, padx=5, pady=5)
 
         result_income = Label(bottom_canvas, text='Przychody', fg='white', bg=RESULT_COLOR, font=LABEL_FONT) \
-            .grid(column=2, row=0, pady=15)
+            .grid(column=2, row=0, padx=5, pady=5)
 
         result_income_zloty = Label(bottom_canvas, text='Przychody zloty', fg='white', bg=RESULT_COLOR, font=LABEL_FONT) \
-            .grid(column=3, row=0)
+            .grid(column=3, row=0, padx=5, pady=5)
 
         result_income_zloty_thousand = Label(bottom_canvas, text='Przychody zloty (tys.)',
-                                      font=LABEL_FONT, fg='white', bg=RESULT_COLOR, padx=15).grid(column=4, row=0)
+                                      font=LABEL_FONT, fg='white', bg=RESULT_COLOR, padx=15).grid(column=4, row=0, padx=5, pady=5)
 
         result_income_zloty_thousand_rounded = Label(bottom_canvas, text='Przychody zloty (tys. zaokr.)', fg='white', bg=RESULT_COLOR,
-                                              font=LABEL_FONT).grid(column=5, row=0)
+                                              font=LABEL_FONT).grid(column=5, row=0, padx=5, pady=5)
 
         result_balance = Label(bottom_canvas, text='Bilans', fg='white', bg=RESULT_COLOR, font=LABEL_FONT) \
-            .grid(column=6, row=0)
+            .grid(column=6, row=0, padx=5, pady=5)
 
         result_balance_zloty = Label(bottom_canvas, text='Bilans zloty', fg='white', bg=RESULT_COLOR, font=LABEL_FONT) \
-            .grid(column=7, row=0)
+            .grid(column=7, row=0, padx=5, pady=5)
 
         result_balance_zloty_thousands = Label(bottom_canvas, text='Bilans zloty (tys.)', fg='white', bg=RESULT_COLOR, font=LABEL_FONT)\
-            .grid(column=8, row=0, padx=10)
+            .grid(column=8, row=0, padx=5, pady=5)
 
         result_balance_zloty_thousands_rounded = Label(bottom_canvas, text='Bilans zloty (tys. zaokr.)', fg='white', bg=RESULT_COLOR, font=LABEL_FONT)\
-            .grid(column=9, row=0, padx=10)
+            .grid(column=9, row=0, padx=5, pady=5)
 
         result_employment = Label(bottom_canvas, text='Zatrudnienie', bg=RESULT_COLOR, fg='white', font=LABEL_FONT) \
-            .grid(column=10, row=0, padx=10)
+            .grid(column=10, row=0, padx=5, pady=5)
+
+        euro_rate_2020 = Label(bottom_canvas, text=EURO_RATE_2020, bg=RESULT_COLOR, fg=LABEL_COLOR, font=LABEL_FONT)
+        euro_rate_2020.grid(column=1, row=1, padx=5)
+
+        euro_rate_2019 = Label(bottom_canvas, text=EURO_RATE_2019, bg=RESULT_COLOR, fg=LABEL_COLOR, font=LABEL_FONT)
+        euro_rate_2019.grid(column=1, row=2, padx=5)
+
+        euro_rate_2018 = Label(bottom_canvas, text=EURO_RATE_2018, bg=RESULT_COLOR, fg=LABEL_COLOR, font=LABEL_FONT)
+        euro_rate_2018.grid(column=1, row=3, padx=5)
+
+        euro_rate_2017 = Label(bottom_canvas, text='4,1709', bg=RESULT_COLOR, fg=LABEL_COLOR, font=LABEL_FONT)
+        euro_rate_2017.grid(column=1, row=4, padx=5)
 
         # 2020
-        # euro_rate_2020 = Label(bottom_canvas, text=EURO_RATE_2020, bg=RESULT_COLOR, fg=LABEL_COLOR, font=LABEL_FONT)
-        # euro_rate_2020.grid(column=1, row=1, padx=5)
-        #
-        # result_income_2020 = Label(bottom_canvas, text=self.result['2020']['Przychody'], bg=RESULT_COLOR, font=LABEL_FONT)
-        # result_income_2020.grid(column=2, row=1, padx=5, pady=5)
 
-        # income_2020_zloty = Label(bottom_canvas, text='0.00', fg=LABEL_COLOR, font=LABEL_FONT)
-        # income_2020_zloty.grid(column=3, row=self.row + 1)
+        self.result_income_2020 = Label(bottom_canvas, text='0.00', bg=RESULT_COLOR, font=LABEL_FONT)
+        self.result_income_2020.grid(column=2, row=1, padx=5, pady=5)
+
+        self.result_income_2020_zloty = Label(bottom_canvas, text='0.00', bg=RESULT_COLOR, font=LABEL_FONT)
+        self.result_income_2020_zloty.grid(column=3, row=1, padx=5, pady=5)
+
+        self.result_income_2020_zloty_thousand = Label(bottom_canvas, text='0.00', bg=RESULT_COLOR, font=LABEL_FONT)
+        self.result_income_2020_zloty_thousand.grid(column=4, row=1, padx=5, pady=5)
+
+        self.result_income_2020_zloty_thousand_rounded = Label(bottom_canvas, text='0.00', bg=RESULT_COLOR, font=LABEL_FONT)
+        self.result_income_2020_zloty_thousand_rounded.grid(column=5, row=1, padx=5, pady=5)
+
+        self.result_balance_2020 = Label(bottom_canvas, text='0.00', bg=RESULT_COLOR, font=LABEL_FONT)
+        self.result_balance_2020.grid(column=6, row=1, padx=5, pady=5)
+
+        self.result_balance_zloty_2020 = Label(bottom_canvas, text='0.00', bg=RESULT_COLOR, font=LABEL_FONT)
+        self.result_balance_zloty_2020.grid(column=7, row=1, padx=5, pady=5)
+
+        self.result_balance_zloty_thousands_2020 = Label(bottom_canvas, text='0.00', bg=RESULT_COLOR, font=LABEL_FONT)
+        self.result_balance_zloty_thousands_2020.grid(column=8, row=1, padx=5, pady=5)
+
+        self.result_balance_zloty_thousands_rounded_2020 = Label(bottom_canvas, text='0.00', bg=RESULT_COLOR, font=LABEL_FONT)
+        self.result_balance_zloty_thousands_rounded_2020.grid(column=9, row=1, padx=5, pady=5)
+
+        self.result_employment_2020 = Label(bottom_canvas, text='0.00', bg=RESULT_COLOR, font=LABEL_FONT)
+        self.result_employment_2020.grid(column=10, row=1, padx=5, pady=5)
+
+        # 2019
+
+        self.result_income_2019 = Label(bottom_canvas, text='0.00', bg=RESULT_COLOR, font=LABEL_FONT)
+        self.result_income_2019.grid(column=2, row=2, padx=5, pady=5)
+
+        self.result_income_2019_zloty = Label(bottom_canvas, text='0.00', bg=RESULT_COLOR, font=LABEL_FONT)
+        self.result_income_2019_zloty.grid(column=3, row=2, padx=5, pady=5)
+
+        self.result_income_2019_zloty_thousand = Label(bottom_canvas, text='0.00', bg=RESULT_COLOR, font=LABEL_FONT)
+        self.result_income_2019_zloty_thousand.grid(column=4, row=2, padx=5, pady=5)
+
+        self.result_income_2019_zloty_thousand_rounded = Label(bottom_canvas, text='0.00', bg=RESULT_COLOR,
+                                                               font=LABEL_FONT)
+        self.result_income_2019_zloty_thousand_rounded.grid(column=5, row=2, padx=5, pady=5)
+
+        self.result_balance_2019 = Label(bottom_canvas, text='0.00', bg=RESULT_COLOR, font=LABEL_FONT)
+        self.result_balance_2019.grid(column=6, row=2, padx=5, pady=5)
+
+        self.result_balance_zloty_2019 = Label(bottom_canvas, text='0.00', bg=RESULT_COLOR, font=LABEL_FONT)
+        self.result_balance_zloty_2019.grid(column=7, row=2, padx=5, pady=5)
+
+        self.result_balance_zloty_thousands_2019 = Label(bottom_canvas, text='0.00', bg=RESULT_COLOR, font=LABEL_FONT)
+        self.result_balance_zloty_thousands_2019.grid(column=8, row=2, padx=5, pady=5)
+
+        self.result_balance_zloty_thousands_rounded_2019 = Label(bottom_canvas, text='0.00', bg=RESULT_COLOR,
+                                                                 font=LABEL_FONT)
+        self.result_balance_zloty_thousands_rounded_2019.grid(column=9, row=2, padx=5, pady=5)
+
+        self.result_employment_2019 = Label(bottom_canvas, text='0.00', bg=RESULT_COLOR, font=LABEL_FONT)
+        self.result_employment_2019.grid(column=10, row=2, padx=5, pady=5)
+
+        # 2018
+
+        self.result_income_2018 = Label(bottom_canvas, text='0.00', bg=RESULT_COLOR, font=LABEL_FONT)
+        self.result_income_2018.grid(column=2, row=3, padx=5, pady=5)
+
+        self.result_income_2018_zloty = Label(bottom_canvas, text='0.00', bg=RESULT_COLOR, font=LABEL_FONT)
+        self.result_income_2018_zloty.grid(column=3, row=3, padx=5, pady=5)
+
+        self.result_income_2018_zloty_thousand = Label(bottom_canvas, text='0.00', bg=RESULT_COLOR, font=LABEL_FONT)
+        self.result_income_2018_zloty_thousand.grid(column=4, row=3, padx=5, pady=5)
+
+        self.result_income_2018_zloty_thousand_rounded = Label(bottom_canvas, text='0.00', bg=RESULT_COLOR,
+                                                               font=LABEL_FONT)
+        self.result_income_2018_zloty_thousand_rounded.grid(column=5, row=3, padx=5, pady=5)
+
+        self.result_balance_2018 = Label(bottom_canvas, text='0.00', bg=RESULT_COLOR, font=LABEL_FONT)
+        self.result_balance_2018.grid(column=6, row=3, padx=5, pady=5)
+
+        self.result_balance_zloty_2018 = Label(bottom_canvas, text='0.00', bg=RESULT_COLOR, font=LABEL_FONT)
+        self.result_balance_zloty_2018.grid(column=7, row=3, padx=5, pady=5)
+
+        self.result_balance_zloty_thousands_2018 = Label(bottom_canvas, text='0.00', bg=RESULT_COLOR, font=LABEL_FONT)
+        self.result_balance_zloty_thousands_2018.grid(column=8, row=3, padx=5, pady=5)
+
+        self.result_balance_zloty_thousands_rounded_2018 = Label(bottom_canvas, text='0.00', bg=RESULT_COLOR,
+                                                                 font=LABEL_FONT)
+        self.result_balance_zloty_thousands_rounded_2018.grid(column=9, row=3, padx=5, pady=5)
+
+        self.result_employment_2018 = Label(bottom_canvas, text='0.00', bg=RESULT_COLOR, font=LABEL_FONT)
+        self.result_employment_2018.grid(column=10, row=3, padx=5, pady=5)
+
+        # 2017
+
+        self.result_income_2017 = Label(bottom_canvas, text='0.00', bg=RESULT_COLOR, font=LABEL_FONT)
+        self.result_income_2017.grid(column=2, row=4, padx=5, pady=5)
+
+        self.result_income_2017_zloty = Label(bottom_canvas, text='0.00', bg=RESULT_COLOR, font=LABEL_FONT)
+        self.result_income_2017_zloty.grid(column=3, row=4, padx=5, pady=5)
+
+        self.result_income_2017_zloty_thousand = Label(bottom_canvas, text='0.00', bg=RESULT_COLOR, font=LABEL_FONT)
+        self.result_income_2017_zloty_thousand.grid(column=4, row=4, padx=5, pady=5)
+
+        self.result_income_2017_zloty_thousand_rounded = Label(bottom_canvas, text='0.00', bg=RESULT_COLOR,
+                                                               font=LABEL_FONT)
+        self.result_income_2017_zloty_thousand_rounded.grid(column=5, row=4, padx=5, pady=5)
+
+        self.result_balance_2017 = Label(bottom_canvas, text='0.00', bg=RESULT_COLOR, font=LABEL_FONT)
+        self.result_balance_2017.grid(column=6, row=4, padx=5, pady=5)
+
+        self.result_balance_zloty_2017 = Label(bottom_canvas, text='0.00', bg=RESULT_COLOR, font=LABEL_FONT)
+        self.result_balance_zloty_2017.grid(column=7, row=4, padx=5, pady=5)
+
+        self.result_balance_zloty_thousands_2017 = Label(bottom_canvas, text='0.00', bg=RESULT_COLOR, font=LABEL_FONT)
+        self.result_balance_zloty_thousands_2017.grid(column=8, row=4, padx=5, pady=5)
+
+        self.result_balance_zloty_thousands_rounded_2017 = Label(bottom_canvas, text='0.00', bg=RESULT_COLOR,
+                                                                 font=LABEL_FONT)
+        self.result_balance_zloty_thousands_rounded_2017.grid(column=9, row=4, padx=5, pady=5)
+
+        self.result_employment_2017 = Label(bottom_canvas, text='0.00', bg=RESULT_COLOR, font=LABEL_FONT)
+        self.result_employment_2017.grid(column=10, row=4, padx=5, pady=5)
