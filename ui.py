@@ -1,4 +1,5 @@
 from tkinter import *
+import math
 
 THEME_COLOR = '#343951'
 TEXT_COLOR = '#343951'
@@ -26,6 +27,7 @@ class Counter:
         self.window.config(padx=20, pady=20, bg=THEME_COLOR)
         self.row = -5
         self.added_company = False
+        self.company_number = -1
 
         # Ogarnąc ten blok - START!!!
 
@@ -72,9 +74,33 @@ class Counter:
                 'Bilans złoty (tys. zaokr.)': 0,
                 'Zatrudnienie': 0,
             },
-            '2018': None,
-            '2017': None,
+            '2018': {
+                'Kurs Euro': EURO_RATE_2018,
+                'Przychody': 0,
+                'Przychody złoty': 0,
+                'Przychody złoty (tys.)': 0,
+                "Przychody złoty (tys. zaokr.)": 0,
+                'Bilans': 0,
+                'Bilans złoty': 0,
+                'Bilans złoty (tys.)': 0,
+                'Bilans złoty (tys. zaokr.)': 0,
+                'Zatrudnienie': 0,
+            },
+            '2017': {
+                'Kurs Euro': EURO_RATE_2017,
+                'Przychody': 0,
+                'Przychody złoty': 0,
+                'Przychody złoty (tys.)': 0,
+                "Przychody złoty (tys. zaokr.)": 0,
+                'Bilans': 0,
+                'Bilans złoty': 0,
+                'Bilans złoty (tys.)': 0,
+                'Bilans złoty (tys. zaokr.)': 0,
+                'Zatrudnienie': 0,
+            },
         }
+        self.company_number = -1
+        self.temp_list = []
         self.set_item_table()
 
         # Button - add new set of table
@@ -87,6 +113,7 @@ class Counter:
 
     def set_item_table(self):
         """Create table for data with labels and inputs"""
+        self.company_number += 1
         self.row += 5
         if not self.added_company:
             self.added_company = True
@@ -95,18 +122,17 @@ class Counter:
                 .grid(column=0, row=self.row, pady=(20, 0))
             percent_input = Entry(self.scrollable_frame, width=10, bg=BUTTON_AND_PERCENT_COLOR).grid(column=1, row=self.row, pady=(20, 0))
             self.row += 1
-
         # Year labels
-        year_2020_label = Label(self.scrollable_frame, text='2020', fg=TEXT_COLOR, font=LABEL_FONT)\
+        year_2020_label = Label(self.scrollable_frame, text=YEAR_2020, fg=TEXT_COLOR, font=LABEL_FONT)\
             .grid(column=0, row=self.row + 1, padx=20)
 
-        year_2019_label = Label(self.scrollable_frame, text='2019', fg=TEXT_COLOR, font=LABEL_FONT)\
+        year_2019_label = Label(self.scrollable_frame, text=YEAR_2019, fg=TEXT_COLOR, font=LABEL_FONT)\
             .grid(column=0, row=self.row + 2, padx=20)
 
-        year_2018_label = Label(self.scrollable_frame, text='2018', fg=TEXT_COLOR, font=LABEL_FONT)\
+        year_2018_label = Label(self.scrollable_frame, text=YEAR_2018, fg=TEXT_COLOR, font=LABEL_FONT)\
             .grid(column=0, row=self.row + 3, padx=20)
 
-        year_2017_label = Label(self.scrollable_frame, text='2017', fg=TEXT_COLOR, font=LABEL_FONT)\
+        year_2017_label = Label(self.scrollable_frame, text=YEAR_2017, fg=TEXT_COLOR, font=LABEL_FONT)\
             .grid(column=0, row=self.row + 4, padx=20)
 
         # Top labels
@@ -159,7 +185,7 @@ class Counter:
 
         income_var2020 = StringVar()
         income_var2020.trace_add("write", lambda name, index, mode, sv=income_var2020: update_income_labels
-        (income_var2020, income_2020_zloty, income_2020_zloty_thousand, income_2020_zloty_thousand_rounded, EURO_RATE_2020))
+        (income_var2020, income_2020_zloty, income_2020_zloty_thousand, income_2020_zloty_thousand_rounded, EURO_RATE_2020, YEAR_2020))
 
         income_2020 = Entry(self.scrollable_frame, width=20, textvariable=income_var2020)
         income_2020.grid(column=2, row=self.row + 1, padx=5, pady=5)
@@ -198,7 +224,7 @@ class Counter:
 
         income_var2019 = StringVar()
         income_var2019.trace_add("write", lambda name, index, mode, sv=income_var2019: update_income_labels
-        (income_var2019, income_2019_zloty, income_2019_zloty_thousand, income_2019_zloty_thousand_rounded, EURO_RATE_2019))
+        (income_var2019, income_2019_zloty, income_2019_zloty_thousand, income_2019_zloty_thousand_rounded, EURO_RATE_2019, YEAR_2019))
 
         income_2019 = Entry(self.scrollable_frame, width=20, textvariable=income_var2019)
         income_2019.grid(column=2, row=self.row + 2, padx=5, pady=5)
@@ -215,7 +241,7 @@ class Counter:
         balance_var2019 = StringVar()
         balance_var2019.trace_add("write", lambda name, index, mode, sv=balance_var2019: update_balance_labels
         (balance_var2019, balance_zloty_2019, balance_zloty_thousands_2019, balance_zloty_thousands_rounded_2019,
-         EURO_RATE_2019))
+         EURO_RATE_2019, YEAR_2019))
 
         balance_2019 = Entry(self.scrollable_frame, width=20, textvariable=balance_var2019)
         balance_2019.grid(column=6, row=self.row + 2, padx=5, pady=5)
@@ -253,7 +279,7 @@ class Counter:
         balance_var2018 = StringVar()
         balance_var2018.trace_add("write", lambda name, index, mode, sv=balance_var2018: update_balance_labels
         (balance_var2018, balance_zloty_2018, balance_zloty_thousands_2018, balance_zloty_thousands_rounded_2018,
-         EURO_RATE_2018))
+         EURO_RATE_2018, YEAR_2018))
 
         balance_2018 = Entry(self.scrollable_frame, width=20, textvariable=balance_var2018)
         balance_2018.grid(column=6, row=self.row + 3, padx=5, pady=5)
@@ -290,7 +316,7 @@ class Counter:
         balance_var2017 = StringVar()
         balance_var2017.trace_add("write", lambda name, index, mode, sv=balance_var2017: update_balance_labels
         (balance_var2017, balance_zloty_2017, balance_zloty_thousands_2017, balance_zloty_thousands_rounded_2017,
-         EURO_RATE_2017))
+         EURO_RATE_2017, YEAR_2017))
 
         balance_2017 = Entry(self.scrollable_frame, width=20, textvariable=balance_var2017)
         balance_2017.grid(column=6, row=self.row + 4, padx=5, pady=5)
@@ -307,10 +333,12 @@ class Counter:
         employment_2017 = Entry(self.scrollable_frame, width=20).grid(column=10, row=self.row + 4, padx=5, pady=5)
 
         def update_income_labels(s_var, income_zloty_input,
-                                 income_zloty_thousand_input, income_zloty_thousand_rounded_input, actual_euro_rate):
+                                 income_zloty_thousand_input, income_zloty_thousand_rounded_input, actual_euro_rate, year):
             """Updates income labels with euro rate calculates"""
             if s_var.get():
-                income_in_euro = round(float(s_var.get().replace(',', '.')) / actual_euro_rate, 2)
+                value = s_var.get()
+                income_in_euro = round(float(value.replace(',', '.')) / actual_euro_rate, 2)
+
             else:
                 income_in_euro = 0.00
 
@@ -318,15 +346,26 @@ class Counter:
             income_zloty_thousand_input.config(text=income_in_euro / 1000)
             income_zloty_thousand_rounded_input.config(text=round(income_in_euro / 1000, 2))
 
-            # Update result
-            self.result['2020']['Przychody'] = float(s_var.get()) # zamiast roku stałą year przekazana do funkcji
-            self.result_income_2020.config(text=self.result['2020']['Przychody'])#????????????????????????????????
+            # Save to list, and update result table
+            focused_widget = self.window.focus_get()
+            actual_row = focused_widget.grid_info()['row']
+            actual_list_index = math.ceil(actual_row / 5)
+            temp_income = s_var.get()
+            if len(self.temp_list) == actual_list_index - 1:
+                self.temp_list.insert(actual_list_index - 1, {year: temp_income})
+            else:
+                self.temp_list.pop(actual_list_index - 1)
+                self.temp_list.insert(actual_list_index - 1, {year: temp_income})
+            print(self.temp_list)
+
+            # self.result_income_2020.config(text=income_in_euro)
 
         def update_balance_labels(s_var, balance_zloty_input,
                                   balance_zloty_thousand_input, balance_zloty_thousand_rounded_input, actual_euro_rate):
             """Updates balance labels with euro rate calculates"""
             if s_var.get():
-                balance_in_euro = round(float(s_var.get().replace(',', '.')) / actual_euro_rate, 2)
+                value = s_var.get()
+                balance_in_euro = round(float(value.replace(',', '.')) / actual_euro_rate, 2)
             else:
                 balance_in_euro = 0.00
 
