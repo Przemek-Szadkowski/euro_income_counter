@@ -114,6 +114,7 @@ class Counter:
     def set_item_table(self):
         """Create table for data with labels and inputs"""
         self.company_number += 1
+        self.temp_list.append([0,0,0,0])
         self.row += 5
         if not self.added_company:
             self.added_company = True
@@ -185,7 +186,7 @@ class Counter:
 
         income_var2020 = StringVar()
         income_var2020.trace_add("write", lambda name, index, mode, sv=income_var2020: update_income_labels
-        (income_var2020, income_2020_zloty, income_2020_zloty_thousand, income_2020_zloty_thousand_rounded, EURO_RATE_2020, YEAR_2020))
+        (income_var2020, income_2020_zloty, income_2020_zloty_thousand, income_2020_zloty_thousand_rounded, EURO_RATE_2020))
 
         income_2020 = Entry(self.scrollable_frame, width=20, textvariable=income_var2020)
         income_2020.grid(column=2, row=self.row + 1, padx=5, pady=5)
@@ -224,7 +225,7 @@ class Counter:
 
         income_var2019 = StringVar()
         income_var2019.trace_add("write", lambda name, index, mode, sv=income_var2019: update_income_labels
-        (income_var2019, income_2019_zloty, income_2019_zloty_thousand, income_2019_zloty_thousand_rounded, EURO_RATE_2019, YEAR_2019))
+        (income_var2019, income_2019_zloty, income_2019_zloty_thousand, income_2019_zloty_thousand_rounded, EURO_RATE_2019))
 
         income_2019 = Entry(self.scrollable_frame, width=20, textvariable=income_var2019)
         income_2019.grid(column=2, row=self.row + 2, padx=5, pady=5)
@@ -333,7 +334,7 @@ class Counter:
         employment_2017 = Entry(self.scrollable_frame, width=20).grid(column=10, row=self.row + 4, padx=5, pady=5)
 
         def update_income_labels(s_var, income_zloty_input,
-                                 income_zloty_thousand_input, income_zloty_thousand_rounded_input, actual_euro_rate, year):
+                                 income_zloty_thousand_input, income_zloty_thousand_rounded_input, actual_euro_rate):
             """Updates income labels with euro rate calculates"""
             if s_var.get():
                 value = s_var.get()
@@ -348,14 +349,18 @@ class Counter:
 
             # Save to list, and update result table
             focused_widget = self.window.focus_get()
-            actual_row = focused_widget.grid_info()['row']
-            actual_list_index = math.ceil(actual_row / 5)
-            temp_income = s_var.get()
-            if len(self.temp_list) == actual_list_index - 1:
-                self.temp_list.insert(actual_list_index - 1, {year: temp_income})
+            actual_company_row = focused_widget.grid_info()['row']
+            actual_list_index = math.ceil(actual_company_row / 6)
+            if actual_company_row < 6:
+                actual_row_in_set_item_table = actual_company_row - 1
             else:
-                self.temp_list.pop(actual_list_index - 1)
-                self.temp_list.insert(actual_list_index - 1, {year: temp_income})
+                actual_row_in_set_item_table = ((actual_company_row % 6) - 1)
+            temp_income = s_var.get()
+            print(actual_company_row)
+            print(actual_list_index - 1)
+            print(actual_row_in_set_item_table)
+            self.temp_list[actual_list_index - 1][actual_row_in_set_item_table] = temp_income
+
             print(self.temp_list)
 
             # self.result_income_2020.config(text=income_in_euro)
