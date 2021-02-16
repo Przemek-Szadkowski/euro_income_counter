@@ -336,9 +336,11 @@ class Counter:
         def update_income_labels(s_var, income_zloty_input,
                                  income_zloty_thousand_input, income_zloty_thousand_rounded_input, actual_euro_rate):
             """Updates income labels with euro rate calculates"""
+            value_with_dot_coma = ''
             if s_var.get():
                 value = s_var.get()
-                income_in_euro = round(float(value.replace(',', '.')) / actual_euro_rate, 2)
+                value_with_dot_coma = value.replace(',', '.')
+                income_in_euro = round(float(value_with_dot_coma) / actual_euro_rate, 2)
 
             else:
                 income_in_euro = 0.00
@@ -350,12 +352,16 @@ class Counter:
             # Save to list, and update result table
             focused_widget = self.window.focus_get()
             actual_company_row = focused_widget.grid_info()['row']
-            actual_list_index = math.ceil(actual_company_row / 6)
+            actual_list_index = math.ceil(actual_company_row / 6) # assign to variable value that indicates place in order of companies
             if actual_company_row < 6:
                 actual_row_in_set_item_table = actual_company_row - 1
             else:
                 actual_row_in_set_item_table = ((actual_company_row % 6) - 1)
-            temp_income = s_var.get()
+            # temp_income = s_var.get().replace(',', '.')
+            temp_income = round(float(value_with_dot_coma), 2)
+            # 1) rozbić te round i floaty na kilka wyrażeń bez powtarzania?
+            # 2) wprowadzenie stringa - wyłapać jako błąd
+            # 3) podłączyć pozoztsłe inputy w resultcie do obliczeni income'a w złotówkach
             print(actual_company_row)
             print(actual_list_index - 1)
             print(actual_row_in_set_item_table)
@@ -363,7 +369,22 @@ class Counter:
 
             print(self.temp_list)
 
-            # self.result_income_2020.config(text=income_in_euro)
+            # Update result table
+
+            income_2020_sum = 0
+            income_2019_sum = 0
+            income_2018_sum = 0
+            income_2017_sum = 0
+            for income_set in self.temp_list:
+                income_2020_sum += float(income_set[0])
+                income_2019_sum += float(income_set[1])
+                income_2018_sum += float(income_set[2])
+                income_2017_sum += float(income_set[3])
+
+            self.result_income_2020.config(text=income_2020_sum)
+            self.result_income_2019.config(text=income_2019_sum)
+            self.result_income_2018.config(text=income_2018_sum)
+            self.result_income_2017.config(text=income_2017_sum)
 
         def update_balance_labels(s_var, balance_zloty_input,
                                   balance_zloty_thousand_input, balance_zloty_thousand_rounded_input, actual_euro_rate):
