@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import messagebox
 import math
 
 THEME_COLOR = '#343951'
@@ -339,8 +340,14 @@ class Counter:
             value_with_dot_coma = ''
             if s_var.get():
                 value = s_var.get()
-                value_with_dot_coma = value.replace(',', '.')
-                income_in_euro = round(float(value_with_dot_coma) / actual_euro_rate, 2)
+                try:
+                    value_with_dot_coma = float(value.replace(',', '.'))
+                except ValueError:
+                    messagebox.showwarning(title="No chyba Ty...!", message="Szwagru, ale proszę Cię - wpisuj tu tylko cyferki ;)")
+                    value_with_dot_coma = 0
+                    self.window.focus_get().delete(0, 'end') # remove value from input after typing not a number
+                finally:
+                    income_in_euro = round(float(value_with_dot_coma) / actual_euro_rate, 2)
 
             else:
                 income_in_euro = 0.00
@@ -360,7 +367,7 @@ class Counter:
             # temp_income = s_var.get().replace(',', '.')
             temp_income = round(float(value_with_dot_coma), 2)
             # 1) rozbić te round i floaty na kilka wyrażeń bez powtarzania?
-            # 2) wprowadzenie stringa - wyłapać jako błąd
+            # 2) wprowadzenie stringa - wyłapać jako błąd - przenieść to do balancu i employment
             # 3) podłączyć pozoztsłe inputy w resultcie do obliczeni income'a w złotówkach
             print(actual_company_row)
             print(actual_list_index - 1)
