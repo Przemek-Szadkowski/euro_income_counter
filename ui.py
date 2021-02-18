@@ -336,7 +336,8 @@ class Counter:
 
         def update_income_labels(s_var, income_zloty_input,
                                  income_zloty_thousand_input, income_zloty_thousand_rounded_input, actual_euro_rate):
-            """Updates income labels with euro rate calculates"""
+            """Updates income labels with euro rate calculates and add values to result table"""
+
             value_with_dot_coma = ''
             if s_var.get():
                 value = s_var.get()
@@ -344,10 +345,10 @@ class Counter:
                     value_with_dot_coma = float(value.replace(',', '.'))
                 except ValueError:
                     messagebox.showwarning(title="No chyba Ty...!", message="Szwagru, ale proszę Cię - wpisuj tu tylko cyferki ;)")
-                    value_with_dot_coma = 0
-                    self.window.focus_get().delete(0, 'end') # remove value from input after typing not a number
+                    value_with_dot_coma = 0.00
+                    self.window.focus_get().delete(0, 'end')  # remove value from input after typing not a number
                 finally:
-                    income_in_euro = round(float(value_with_dot_coma) / actual_euro_rate, 2)
+                    income_in_euro = round(value_with_dot_coma / actual_euro_rate, 2)
 
             else:
                 income_in_euro = 0.00
@@ -357,22 +358,25 @@ class Counter:
             income_zloty_thousand_rounded_input.config(text=round(income_in_euro / 1000, 2))
 
             # Save to list, and update result table
+
             focused_widget = self.window.focus_get()
             actual_company_row = focused_widget.grid_info()['row']
-            actual_list_index = math.ceil(actual_company_row / 6) # assign to variable value that indicates place in order of companies
+            actual_list_index = math.ceil(actual_company_row / 6)  # assign to variable value that indicates
+            # place in order of companies
             if actual_company_row < 6:
-                actual_row_in_set_item_table = actual_company_row - 1
+                actual_row_in_set_of_item_table = actual_company_row - 1
             else:
-                actual_row_in_set_item_table = ((actual_company_row % 6) - 1)
-            # temp_income = s_var.get().replace(',', '.')
-            temp_income = round(float(value_with_dot_coma), 2)
-            # 1) rozbić te round i floaty na kilka wyrażeń bez powtarzania?
+                actual_row_in_set_of_item_table = ((actual_company_row % 6) - 1)
+            temp_income = round(value_with_dot_coma, 2)
+
             # 2) wprowadzenie stringa - wyłapać jako błąd - przenieść to do balancu i employment
             # 3) podłączyć pozoztsłe inputy w resultcie do obliczeni income'a w złotówkach
+            # 4) rozbić na moduły
+
             print(actual_company_row)
             print(actual_list_index - 1)
-            print(actual_row_in_set_item_table)
-            self.temp_list[actual_list_index - 1][actual_row_in_set_item_table] = temp_income
+            print(actual_row_in_set_of_item_table)
+            self.temp_list[actual_list_index - 1][actual_row_in_set_of_item_table] = temp_income
 
             print(self.temp_list)
 
