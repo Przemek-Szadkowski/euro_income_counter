@@ -354,7 +354,7 @@ class Counter:
                 income_in_euro = 0.00
 
             income_zloty_input.config(text=income_in_euro)
-            income_zloty_thousand_input.config(text=income_in_euro / 1000)
+            income_zloty_thousand_input.config(text=round(income_in_euro / 1000, 4))
             income_zloty_thousand_rounded_input.config(text=round(income_in_euro / 1000, 2))
 
             # Save to list, and update result table
@@ -396,6 +396,26 @@ class Counter:
             self.result_income_2019.config(text=income_2019_sum)
             self.result_income_2018.config(text=income_2018_sum)
             self.result_income_2017.config(text=income_2017_sum)
+
+            income_2020_sum_zloty = round(income_2020_sum / EURO_RATE_2020, 2)
+            income_2019_sum_zloty = round(income_2019_sum / EURO_RATE_2019, 2)
+            income_2018_sum_zloty = round(income_2018_sum / EURO_RATE_2018, 2)
+            income_2017_sum_zloty = round(income_2017_sum / EURO_RATE_2017, 2)
+
+            self.result_income_2020_zloty.config(text=income_2020_sum_zloty)
+            self.result_income_2019_zloty.config(text=income_2019_sum_zloty)
+            self.result_income_2018_zloty.config(text=income_2018_sum_zloty)
+            self.result_income_2017_zloty.config(text=income_2017_sum_zloty)
+
+            self.result_income_2020_zloty_thousand.config(text=round(income_2020_sum_zloty / 1000, 4))
+            self.result_income_2019_zloty_thousand.config(text=round(income_2019_sum_zloty / 1000, 4))
+            self.result_income_2018_zloty_thousand.config(text=round(income_2018_sum_zloty / 1000, 4))
+            self.result_income_2017_zloty_thousand.config(text=round(income_2017_sum_zloty / 1000, 4))
+
+            self.result_income_2020_zloty_thousand_rounded.config(text=round(income_2020_sum_zloty / 1000, 2))
+            self.result_income_2019_zloty_thousand_rounded.config(text=round(income_2019_sum_zloty / 1000, 2))
+            self.result_income_2018_zloty_thousand_rounded.config(text=round(income_2018_sum_zloty / 1000, 2))
+            self.result_income_2017_zloty_thousand_rounded.config(text=round(income_2017_sum_zloty / 1000, 2))
 
         def update_balance_labels(s_var, balance_zloty_input,
                                   balance_zloty_thousand_input, balance_zloty_thousand_rounded_input, actual_euro_rate):
