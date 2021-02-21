@@ -101,7 +101,8 @@ class Counter:
             },
         }
         self.company_number = -1
-        self.temp_list = []
+        self.income_list = []
+        self.balance_list = []
         self.set_item_table()
 
         # Button - add new set of table
@@ -115,7 +116,8 @@ class Counter:
     def set_item_table(self):
         """Create table for data with labels and inputs"""
         self.company_number += 1
-        self.temp_list.append([0,0,0,0])
+        self.income_list.append([0, 0, 0, 0])
+        self.balance_list.append([0, 0, 0, 0])
         self.row += 5
         if not self.added_company:
             self.added_company = True
@@ -243,7 +245,7 @@ class Counter:
         balance_var2019 = StringVar()
         balance_var2019.trace_add("write", lambda name, index, mode, sv=balance_var2019: update_balance_labels
         (balance_var2019, balance_zloty_2019, balance_zloty_thousands_2019, balance_zloty_thousands_rounded_2019,
-         EURO_RATE_2019, YEAR_2019))
+         EURO_RATE_2019))
 
         balance_2019 = Entry(self.scrollable_frame, width=20, textvariable=balance_var2019)
         balance_2019.grid(column=6, row=self.row + 2, padx=5, pady=5)
@@ -281,7 +283,7 @@ class Counter:
         balance_var2018 = StringVar()
         balance_var2018.trace_add("write", lambda name, index, mode, sv=balance_var2018: update_balance_labels
         (balance_var2018, balance_zloty_2018, balance_zloty_thousands_2018, balance_zloty_thousands_rounded_2018,
-         EURO_RATE_2018, YEAR_2018))
+         EURO_RATE_2018))
 
         balance_2018 = Entry(self.scrollable_frame, width=20, textvariable=balance_var2018)
         balance_2018.grid(column=6, row=self.row + 3, padx=5, pady=5)
@@ -318,7 +320,7 @@ class Counter:
         balance_var2017 = StringVar()
         balance_var2017.trace_add("write", lambda name, index, mode, sv=balance_var2017: update_balance_labels
         (balance_var2017, balance_zloty_2017, balance_zloty_thousands_2017, balance_zloty_thousands_rounded_2017,
-         EURO_RATE_2017, YEAR_2017))
+         EURO_RATE_2017))
 
         balance_2017 = Entry(self.scrollable_frame, width=20, textvariable=balance_var2017)
         balance_2017.grid(column=6, row=self.row + 4, padx=5, pady=5)
@@ -338,7 +340,7 @@ class Counter:
                                  income_zloty_thousand_input, income_zloty_thousand_rounded_input, actual_euro_rate):
             """Updates income labels with euro rate calculates and add values to result table"""
 
-            value_with_dot_coma = ''
+            value_with_dot_coma = 0.00
             if s_var.get():
                 value = s_var.get()
                 try:
@@ -376,9 +378,9 @@ class Counter:
             print(actual_company_row)
             print(actual_list_index - 1)
             print(actual_row_in_set_of_item_table)
-            self.temp_list[actual_list_index - 1][actual_row_in_set_of_item_table] = temp_income
+            self.income_list[actual_list_index - 1][actual_row_in_set_of_item_table] = temp_income
 
-            print(self.temp_list)
+            print(self.income_list)
 
             # Update result table
 
@@ -386,7 +388,7 @@ class Counter:
             income_2019_sum = 0
             income_2018_sum = 0
             income_2017_sum = 0
-            for income_set in self.temp_list:
+            for income_set in self.income_list:
                 income_2020_sum += float(income_set[0])
                 income_2019_sum += float(income_set[1])
                 income_2018_sum += float(income_set[2])
@@ -420,15 +422,87 @@ class Counter:
         def update_balance_labels(s_var, balance_zloty_input,
                                   balance_zloty_thousand_input, balance_zloty_thousand_rounded_input, actual_euro_rate):
             """Updates balance labels with euro rate calculates"""
+
+            value_with_dot_coma = 0.00
             if s_var.get():
                 value = s_var.get()
-                balance_in_euro = round(float(value.replace(',', '.')) / actual_euro_rate, 2)
+                try:
+                    value_with_dot_coma = float(value.replace(',', '.'))
+                except ValueError:
+                    messagebox.showwarning(title="No chyba Ty...!",
+                                           message="Szwagru, ale proszę Cię - wpisuj tu tylko cyferki ;)")
+                    value_with_dot_coma = 0.00
+                    self.window.focus_get().delete(0, 'end')  # remove value from input after typing not a number
+                finally:
+                    balance_in_euro = round(value_with_dot_coma / actual_euro_rate, 2)
+
             else:
                 balance_in_euro = 0.00
 
+            # if s_var.get():
+            #     value = s_var.get()
+            #     balance_in_euro = round(float(value.replace(',', '.')) / actual_euro_rate, 2)
+            # else:
+            #     balance_in_euro = 0.00
+
             balance_zloty_input.config(text=balance_in_euro)
-            balance_zloty_thousand_input.config(text=balance_in_euro / 1000)
+            balance_zloty_thousand_input.config(text=round(balance_in_euro / 1000, 4))
             balance_zloty_thousand_rounded_input.config(text=round(balance_in_euro / 1000, 2))
+
+            # Save to list, and update result table
+
+            focused_widget = self.window.focus_get()
+            actual_company_row = focused_widget.grid_info()['row']
+            actual_list_index = math.ceil(actual_company_row / 6)  # assign to variable value that indicates
+            # place in order of companies
+            if actual_company_row < 6:
+                actual_row_in_set_of_item_table = actual_company_row - 1
+            else:
+                actual_row_in_set_of_item_table = ((actual_company_row % 6) - 1)
+            temp_balance = round(value_with_dot_coma, 2)
+
+            print(actual_company_row)
+            print(actual_list_index - 1)
+            print(actual_row_in_set_of_item_table)
+            self.balance_list[actual_list_index - 1][actual_row_in_set_of_item_table] = temp_balance
+
+            print(self.balance_list)
+
+            # Update result table
+
+            balance_2020_sum = 0
+            balance_2019_sum = 0
+            balance_2018_sum = 0
+            balance_2017_sum = 0
+            for balance_set in self.balance_list:
+                balance_2020_sum += float(balance_set[0])
+                balance_2019_sum += float(balance_set[1])
+                balance_2018_sum += float(balance_set[2])
+                balance_2017_sum += float(balance_set[3])
+
+            self.result_balance_2020.config(text=balance_2020_sum)
+            self.result_balance_2019.config(text=balance_2019_sum)
+            self.result_balance_2018.config(text=balance_2018_sum)
+            self.result_balance_2017.config(text=balance_2017_sum)
+
+            balance_2020_sum_zloty = round(balance_2020_sum / EURO_RATE_2020, 2)
+            balance_2019_sum_zloty = round(balance_2019_sum / EURO_RATE_2019, 2)
+            balance_2018_sum_zloty = round(balance_2018_sum / EURO_RATE_2018, 2)
+            balance_2017_sum_zloty = round(balance_2017_sum / EURO_RATE_2017, 2)
+
+            self.result_balance_zloty_2020.config(text=balance_2020_sum_zloty)
+            self.result_balance_zloty_2019.config(text=balance_2019_sum_zloty)
+            self.result_balance_zloty_2018.config(text=balance_2018_sum_zloty)
+            self.result_balance_zloty_2017.config(text=balance_2017_sum_zloty)
+
+            self.result_balance_zloty_thousands_2020.config(text=round(balance_2020_sum_zloty / 1000, 4))
+            self.result_balance_zloty_thousands_2019.config(text=round(balance_2019_sum_zloty / 1000, 4))
+            self.result_balance_zloty_thousands_2018.config(text=round(balance_2018_sum_zloty / 1000, 4))
+            self.result_balance_zloty_thousands_2017.config(text=round(balance_2017_sum_zloty / 1000, 4))
+            self.result_balance_zloty_thousands_rounded_2020.config(text=round(balance_2020_sum_zloty / 1000, 2))
+            self.result_balance_zloty_thousands_rounded_2019.config(text=round(balance_2019_sum_zloty / 1000, 2))
+            self.result_balance_zloty_thousands_rounded_2018.config(text=round(balance_2018_sum_zloty / 1000, 2))
+            self.result_balance_zloty_thousands_rounded_2017.config(text=round(balance_2017_sum_zloty / 1000, 2))
 
         def update_employment_status(s_var):
             print(s_var.get())
@@ -466,16 +540,16 @@ class Counter:
         result_income_zloty_thousand_rounded = Label(bottom_canvas, text='Przychody zloty (tys. zaokr.)', fg='white', bg=RESULT_COLOR,
                                               font=LABEL_FONT).grid(column=5, row=0, padx=5, pady=5)
 
-        result_balance = Label(bottom_canvas, text='Bilans', fg='white', bg=RESULT_COLOR, font=LABEL_FONT) \
+        result_balance = Label(bottom_canvas, text='Bilans', bg=RESULT_COLOR, font=LABEL_FONT) \
             .grid(column=6, row=0, padx=5, pady=5)
 
-        result_balance_zloty = Label(bottom_canvas, text='Bilans zloty', fg='white', bg=RESULT_COLOR, font=LABEL_FONT) \
+        result_balance_zloty = Label(bottom_canvas, text='Bilans zloty', bg=RESULT_COLOR, font=LABEL_FONT) \
             .grid(column=7, row=0, padx=5, pady=5)
 
-        result_balance_zloty_thousands = Label(bottom_canvas, text='Bilans zloty (tys.)', fg='white', bg=RESULT_COLOR, font=LABEL_FONT)\
+        result_balance_zloty_thousands = Label(bottom_canvas, text='Bilans zloty (tys.)', bg=RESULT_COLOR, font=LABEL_FONT)\
             .grid(column=8, row=0, padx=5, pady=5)
 
-        result_balance_zloty_thousands_rounded = Label(bottom_canvas, text='Bilans zloty (tys. zaokr.)', fg='white', bg=RESULT_COLOR, font=LABEL_FONT)\
+        result_balance_zloty_thousands_rounded = Label(bottom_canvas, text='Bilans zloty (tys. zaokr.)', bg=RESULT_COLOR, font=LABEL_FONT)\
             .grid(column=9, row=0, padx=5, pady=5)
 
         result_employment = Label(bottom_canvas, text='Zatrudnienie', bg=RESULT_COLOR, fg='white', font=LABEL_FONT) \
@@ -507,16 +581,16 @@ class Counter:
         self.result_income_2020_zloty_thousand_rounded = Label(bottom_canvas, text='0.00', bg=RESULT_COLOR, font=LABEL_FONT)
         self.result_income_2020_zloty_thousand_rounded.grid(column=5, row=1, padx=5, pady=5)
 
-        self.result_balance_2020 = Label(bottom_canvas, text='0.00', bg=RESULT_COLOR, font=LABEL_FONT)
+        self.result_balance_2020 = Label(bottom_canvas, text='0.00', fg='white', bg=RESULT_COLOR, font=LABEL_FONT)
         self.result_balance_2020.grid(column=6, row=1, padx=5, pady=5)
 
-        self.result_balance_zloty_2020 = Label(bottom_canvas, text='0.00', bg=RESULT_COLOR, font=LABEL_FONT)
+        self.result_balance_zloty_2020 = Label(bottom_canvas, text='0.00', fg='white', bg=RESULT_COLOR, font=LABEL_FONT)
         self.result_balance_zloty_2020.grid(column=7, row=1, padx=5, pady=5)
 
-        self.result_balance_zloty_thousands_2020 = Label(bottom_canvas, text='0.00', bg=RESULT_COLOR, font=LABEL_FONT)
+        self.result_balance_zloty_thousands_2020 = Label(bottom_canvas, text='0.00', fg='white', bg=RESULT_COLOR, font=LABEL_FONT)
         self.result_balance_zloty_thousands_2020.grid(column=8, row=1, padx=5, pady=5)
 
-        self.result_balance_zloty_thousands_rounded_2020 = Label(bottom_canvas, text='0.00', bg=RESULT_COLOR, font=LABEL_FONT)
+        self.result_balance_zloty_thousands_rounded_2020 = Label(bottom_canvas, text='0.00', fg='white', bg=RESULT_COLOR, font=LABEL_FONT)
         self.result_balance_zloty_thousands_rounded_2020.grid(column=9, row=1, padx=5, pady=5)
 
         self.result_employment_2020 = Label(bottom_canvas, text='0.00', bg=RESULT_COLOR, font=LABEL_FONT)
@@ -537,16 +611,16 @@ class Counter:
                                                                font=LABEL_FONT)
         self.result_income_2019_zloty_thousand_rounded.grid(column=5, row=2, padx=5, pady=5)
 
-        self.result_balance_2019 = Label(bottom_canvas, text='0.00', bg=RESULT_COLOR, font=LABEL_FONT)
+        self.result_balance_2019 = Label(bottom_canvas, text='0.00', fg='white', bg=RESULT_COLOR, font=LABEL_FONT)
         self.result_balance_2019.grid(column=6, row=2, padx=5, pady=5)
 
-        self.result_balance_zloty_2019 = Label(bottom_canvas, text='0.00', bg=RESULT_COLOR, font=LABEL_FONT)
+        self.result_balance_zloty_2019 = Label(bottom_canvas, text='0.00', fg='white', bg=RESULT_COLOR, font=LABEL_FONT)
         self.result_balance_zloty_2019.grid(column=7, row=2, padx=5, pady=5)
 
-        self.result_balance_zloty_thousands_2019 = Label(bottom_canvas, text='0.00', bg=RESULT_COLOR, font=LABEL_FONT)
+        self.result_balance_zloty_thousands_2019 = Label(bottom_canvas, text='0.00', fg='white', bg=RESULT_COLOR, font=LABEL_FONT)
         self.result_balance_zloty_thousands_2019.grid(column=8, row=2, padx=5, pady=5)
 
-        self.result_balance_zloty_thousands_rounded_2019 = Label(bottom_canvas, text='0.00', bg=RESULT_COLOR,
+        self.result_balance_zloty_thousands_rounded_2019 = Label(bottom_canvas, text='0.00', fg='white', bg=RESULT_COLOR,
                                                                  font=LABEL_FONT)
         self.result_balance_zloty_thousands_rounded_2019.grid(column=9, row=2, padx=5, pady=5)
 
@@ -568,16 +642,16 @@ class Counter:
                                                                font=LABEL_FONT)
         self.result_income_2018_zloty_thousand_rounded.grid(column=5, row=3, padx=5, pady=5)
 
-        self.result_balance_2018 = Label(bottom_canvas, text='0.00', bg=RESULT_COLOR, font=LABEL_FONT)
+        self.result_balance_2018 = Label(bottom_canvas, text='0.00', fg='white', bg=RESULT_COLOR, font=LABEL_FONT)
         self.result_balance_2018.grid(column=6, row=3, padx=5, pady=5)
 
-        self.result_balance_zloty_2018 = Label(bottom_canvas, text='0.00', bg=RESULT_COLOR, font=LABEL_FONT)
+        self.result_balance_zloty_2018 = Label(bottom_canvas, text='0.00', fg='white', bg=RESULT_COLOR, font=LABEL_FONT)
         self.result_balance_zloty_2018.grid(column=7, row=3, padx=5, pady=5)
 
-        self.result_balance_zloty_thousands_2018 = Label(bottom_canvas, text='0.00', bg=RESULT_COLOR, font=LABEL_FONT)
+        self.result_balance_zloty_thousands_2018 = Label(bottom_canvas, text='0.00', fg='white', bg=RESULT_COLOR, font=LABEL_FONT)
         self.result_balance_zloty_thousands_2018.grid(column=8, row=3, padx=5, pady=5)
 
-        self.result_balance_zloty_thousands_rounded_2018 = Label(bottom_canvas, text='0.00', bg=RESULT_COLOR,
+        self.result_balance_zloty_thousands_rounded_2018 = Label(bottom_canvas, text='0.00', fg='white', bg=RESULT_COLOR,
                                                                  font=LABEL_FONT)
         self.result_balance_zloty_thousands_rounded_2018.grid(column=9, row=3, padx=5, pady=5)
 
@@ -599,16 +673,16 @@ class Counter:
                                                                font=LABEL_FONT)
         self.result_income_2017_zloty_thousand_rounded.grid(column=5, row=4, padx=5, pady=5)
 
-        self.result_balance_2017 = Label(bottom_canvas, text='0.00', bg=RESULT_COLOR, font=LABEL_FONT)
+        self.result_balance_2017 = Label(bottom_canvas, text='0.00', fg='white', bg=RESULT_COLOR, font=LABEL_FONT)
         self.result_balance_2017.grid(column=6, row=4, padx=5, pady=5)
 
-        self.result_balance_zloty_2017 = Label(bottom_canvas, text='0.00', bg=RESULT_COLOR, font=LABEL_FONT)
+        self.result_balance_zloty_2017 = Label(bottom_canvas, text='0.00', fg='white', bg=RESULT_COLOR, font=LABEL_FONT)
         self.result_balance_zloty_2017.grid(column=7, row=4, padx=5, pady=5)
 
-        self.result_balance_zloty_thousands_2017 = Label(bottom_canvas, text='0.00', bg=RESULT_COLOR, font=LABEL_FONT)
+        self.result_balance_zloty_thousands_2017 = Label(bottom_canvas, text='0.00', fg='white', bg=RESULT_COLOR, font=LABEL_FONT)
         self.result_balance_zloty_thousands_2017.grid(column=8, row=4, padx=5, pady=5)
 
-        self.result_balance_zloty_thousands_rounded_2017 = Label(bottom_canvas, text='0.00', bg=RESULT_COLOR,
+        self.result_balance_zloty_thousands_rounded_2017 = Label(bottom_canvas, text='0.00', fg='white', bg=RESULT_COLOR,
                                                                  font=LABEL_FONT)
         self.result_balance_zloty_thousands_rounded_2017.grid(column=9, row=4, padx=5, pady=5)
 
