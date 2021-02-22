@@ -220,7 +220,7 @@ class Counter:
         balance_zloty_thousands_rounded_2020.grid(column=9, row=self.row + 1)
 
         employment_var2020 = StringVar()
-        employment_var2020.trace_add('write', lambda name, index, mode, sv=employment_var2020: update_employment_status(employment_var2020))
+        employment_var2020.trace_add('write', lambda name, index, mode, sv=employment_var2020: update_employment_status(employment_var2020, self. result_employment_2020))
         employment_2020 = Entry(self.scrollable_frame, width=20, textvariable=employment_var2020)
         employment_2020.grid(column=10, row=self.row + 1, padx=5, pady=5)
 
@@ -504,8 +504,21 @@ class Counter:
             self.result_balance_zloty_thousands_rounded_2018.config(text=round(balance_2018_sum_zloty / 1000, 2))
             self.result_balance_zloty_thousands_rounded_2017.config(text=round(balance_2017_sum_zloty / 1000, 2))
 
-        def update_employment_status(s_var):
-            print(s_var.get())
+        def update_employment_status(s_var, result_label):
+            value_replaced = 0.00
+            if s_var.get():
+                value = s_var.get()
+                try:
+                    value_replaced = float(value.replace(',', '.'))
+                except ValueError:
+                    messagebox.showwarning(title="No chyba Ty...!",
+                                           message="Szwagru, ale proszę Cię - wpisuj tu tylko cyferki ;)")
+                    value_replaced = 0.00
+                    self.window.focus_get().delete(0, 'end')
+                finally:
+                    result_label.config(text=value_replaced)
+            else:
+                result_label.config(text=value_replaced)
 
     def set_result_table(self):
 
