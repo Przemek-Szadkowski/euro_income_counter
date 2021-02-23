@@ -259,7 +259,10 @@ class Counter:
         balance_zloty_thousands_rounded_2019 = Label(self.scrollable_frame, text='0.00', fg=LABEL_COLOR, font=LABEL_FONT)
         balance_zloty_thousands_rounded_2019.grid(column=9, row=self.row + 2)
 
-        employment_2019 = Entry(self.scrollable_frame, width=20)
+        employment_var2019 = StringVar()
+        employment_var2019.trace_add('write', lambda name, index, mode, sv=employment_var2019: update_employment_status(
+            employment_var2019, self.result_employment_2019))
+        employment_2019 = Entry(self.scrollable_frame, width=20, textvariable=employment_var2019)
         employment_2019.grid(column=10, row=self.row + 2, padx=5, pady=5)
 
         # Year 2018
@@ -297,7 +300,14 @@ class Counter:
         balance_zloty_thousands_rounded_2018 = Label(self.scrollable_frame, text='0.00', fg=LABEL_COLOR, font=LABEL_FONT)
         balance_zloty_thousands_rounded_2018.grid(column=9, row=self.row + 3)
 
-        employment_2018 = Entry(self.scrollable_frame, width=20).grid(column=10, row=self.row + 3, padx=5, pady=5)
+        employment_var2018 = StringVar()
+        employment_var2018.trace_add('write', lambda name, index, mode, sv=employment_var2018: update_employment_status(
+            employment_var2018, self.result_employment_2018))
+        employment_2018 = Entry(self.scrollable_frame, width=20, textvariable=employment_var2018)
+        employment_2018.grid(column=10, row=self.row + 3, padx=5, pady=5)
+
+        employment_var2019.trace_add('write', lambda name, index, mode, sv=employment_var2019: update_employment_status(
+            employment_var2019, self.result_employment_2019))
 
         # Year 2017
 
@@ -334,7 +344,11 @@ class Counter:
         balance_zloty_thousands_rounded_2017 = Label(self.scrollable_frame, text='0.00', fg=LABEL_COLOR, font=LABEL_FONT)
         balance_zloty_thousands_rounded_2017.grid(column=9, row=self.row + 4)
 
-        employment_2017 = Entry(self.scrollable_frame, width=20).grid(column=10, row=self.row + 4, padx=5, pady=5)
+        employment_var2017 = StringVar()
+        employment_var2017.trace_add('write', lambda name, index, mode, sv=employment_var2017: update_employment_status(
+            employment_var2017, self.result_employment_2017))
+        employment_2017 = Entry(self.scrollable_frame, width=20, textvariable=employment_var2017)
+        employment_2017.grid(column=10, row=self.row + 4, padx=5, pady=5)
 
         def update_income_labels(s_var, income_zloty_input,
                                  income_zloty_thousand_input, income_zloty_thousand_rounded_input, actual_euro_rate):
