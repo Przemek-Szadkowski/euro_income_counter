@@ -103,6 +103,7 @@ class Counter:
         self.company_number = -1
         self.income_list = []
         self.balance_list = []
+        self.employment_list = []
         self.set_item_table()
 
         # Button - add new set of table
@@ -118,6 +119,7 @@ class Counter:
         self.company_number += 1
         self.income_list.append([0, 0, 0, 0])
         self.balance_list.append([0, 0, 0, 0])
+        self.employment_list.append([0, 0, 0, 0])
         self.row += 5
         if not self.added_company:
             self.added_company = True
@@ -385,9 +387,10 @@ class Counter:
                 actual_row_in_set_of_item_table = ((actual_company_row % 6) - 1)
             temp_income = round(value_with_dot_coma, 2)
 
-            # 2) wprowadzenie stringa - wyłapać jako błąd - przenieść to do balancu i employment
-            # 3) podłączyć pozoztsłe inputy w resultcie do obliczeni income'a w złotówkach
-            # 4) rozbić na moduły
+            # 1) Dodać obsługę pola procentów
+            # 2) Dodoać label i input na nazwę firmy
+            # 3) Rozbić na moduły
+            # 4) Pododawać docstringi do funkcji
 
             print(actual_company_row)
             print(actual_list_index - 1)
@@ -533,6 +536,34 @@ class Counter:
                     result_label.config(text=value_replaced)
             else:
                 result_label.config(text=value_replaced)
+
+            focused_widget = self.window.focus_get()
+            actual_company_row = focused_widget.grid_info()['row']
+            actual_list_index = math.ceil(actual_company_row / 6)  # assign to variable value that indicates
+            # place in order of companies
+            if actual_company_row < 6:
+                actual_row_in_set_of_item_table = actual_company_row - 1
+            else:
+                actual_row_in_set_of_item_table = ((actual_company_row % 6) - 1)
+            temp_employment = round(value_replaced, 2)
+            self.employment_list[actual_list_index - 1][actual_row_in_set_of_item_table] = temp_employment
+
+            # Update result table
+
+            employment_2020_sum = 0
+            employment_2019_sum = 0
+            employment_2018_sum = 0
+            employment_2017_sum = 0
+            for employment_set in self.employment_list:
+                employment_2020_sum += float(employment_set[0])
+                employment_2019_sum += float(employment_set[1])
+                employment_2018_sum += float(employment_set[2])
+                employment_2017_sum += float(employment_set[3])
+
+            self.result_employment_2020.config(text=employment_2020_sum)
+            self.result_employment_2019.config(text=employment_2019_sum)
+            self.result_employment_2018.config(text=employment_2018_sum)
+            self.result_employment_2017.config(text=employment_2017_sum)
 
     def set_result_table(self):
 
