@@ -3,9 +3,8 @@
 # Euro Income Counter
 > App for my brother in law who creates and submits applications for EU grants. He has worked with Excel spreadsheet, send him by his company, but it was dificult for him to work with some excel formulas. So he asked me for help.
 
-![key to colors](key_colors.png)
-
 ## Table of contents
+* [Colors key](#colors key)
 * [General info](#general-info)
 * [Screenshots](#screenshots)
 * [Technologies](#technologies)
@@ -13,6 +12,10 @@
 * [Features](#features)
 * [Inspiration](#inspiration)
 * [Contact](#contact)
+
+## Colors key
+
+![key to colors](key_colors.png)
 
 ## General info
 Add more general information about project. What the purpose of the project is? Motivation?
