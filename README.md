@@ -3,7 +3,7 @@
 # Euro Income Counter
 > App for my brother in law who creates and submits applications for EU grants. He has worked with Excel spreadsheet, send him by his company, but it was dificult for him to work with some excel formulas. So he asked me for help.
 
-![key to colors](key.png)
+![key to colors](key_colors.png)
 
 ## Table of contents
 * [General info](#general-info)
