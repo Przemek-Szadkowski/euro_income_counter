@@ -4,7 +4,7 @@
 > App for my brother in law who creates and submits applications for EU grants. He has worked with Excel spreadsheet, send him by his company, but it was dificult for him to work with some excel formulas. So he asked me for help.
 
 ## Table of contents
-* [Colors key](#colors key)
+* [Colors key](#colors-key)
 * [General info](#general-info)
 * [Screenshots](#screenshots)
 * [Technologies](#technologies)
@@ -13,7 +13,7 @@
 * [Inspiration](#inspiration)
 * [Contact](#contact)
 
-## Colors key
+## Colors-key
 
 ![key to colors](key_colors.png)
 
