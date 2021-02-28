@@ -1,14 +1,13 @@
 ![my idea](my_idea.png)
 
 # Euro Income Counter
-> App for my brother in law who creates and submits applications for EU grants. He has worked with Excel spreadsheet, send him by his company, but it was dificult for him to work with some excel formulas. So he asked me for help.
+> Project for my brother in law who creates and submits applications for EU grants. He has worked with Excel spreadsheet, send him by his company, but it was dificult for him to work with some excel formulas. So he asked me for help.
 
 ## Table of contents
 * [Colors key](#colors-key)
 * [General info](#general-info)
 * [Screenshots](#screenshots)
 * [Technologies](#technologies)
-* [Setup](#setup)
 * [Features](#features)
 * [Inspiration](#inspiration)
 * [Contact](#contact)
@@ -18,38 +17,28 @@
 ![key to colors](key_colors.png)
 
 ## General info
-Add more general information about project. What the purpose of the project is? Motivation?
-
+This application sums up income and balance values from main company and subcompanies and converts it to euro.
+User can add so many subcompanies, as he want.
+User can input income, balance and employment value to relevant year and add subcompanies. And change percentage of shares. Application sums up all incomes, balance and employment values, taking into account the percentage of shares. 
 ## Screenshots
-![Example screenshot](./img/screenshot.png)
+![basic view](basic_view.jpg)
+![view with added subcompany](view_with_added_subcompany.jpg)
 
 ## Technologies
-* Tech 1 - version 1.0
-* Tech 2 - version 2.0
-* Tech 3 - version 3.0
-
-## Setup
-Describe how to install / setup your local environement / add link to demo version.
-
-## Code Examples
-Show examples of usage:
-`put-your-code-here`
+* Python 3.9
+* Tkinter package
 
 ## Features
-List of features ready and TODOs for future development
-* Awesome feature 1
-* Awesome feature 2
-* Awesome feature 3
 
 To-do list:
-* Wow improvement to be done 1
-* Wow improvement to be done 2
+* shift functions to modules
+* clean code
 
 ## Status
-Project is: _in progress_, _finished_, _no longer continue_ and why?
+Project is: _in progress
 
 ## Inspiration
-Add here credits. Project inspired by..., based on...
+Project inspired by my brother in law:) And my need of use new tkinter skills in practice.
 
 ## Contact
-Created by [@fgnfgn](https://www.ffnggn.pl/) - feel free to contact me!
+Created by [przemoszadkowski@o2.pl](mailto:user@example.com) - feel free to contact me!
