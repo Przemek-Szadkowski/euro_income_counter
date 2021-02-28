@@ -14,7 +14,7 @@
 
 ## Colors-key
 
-![key to colors](key_colors.png)
+![key to colors](key.png)
 
 ## General info
 This application sums up income and balance values from main company and subcompanies and converts it to euro.
