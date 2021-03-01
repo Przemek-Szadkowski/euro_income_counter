@@ -126,7 +126,10 @@ class Counter:
         else:
             percent_label = Label(self.scrollable_frame, text='%: ', fg=TEXT_COLOR, font=LABEL_FONT)\
                 .grid(column=0, row=self.row, pady=(20, 0))
-            percent_input = Entry(self.scrollable_frame, width=10, bg=BUTTON_AND_PERCENT_COLOR).grid(column=1, row=self.row, pady=(20, 0))
+            percentage = StringVar()
+            percentage.trace_add("write", lambda name, index, mode, sv=percentage: take_percentage(percentage))
+            percent_input = Entry(self.scrollable_frame, width=10, bg=BUTTON_AND_PERCENT_COLOR, textvariable=percentage)
+            percent_input.grid(column=1, row=self.row, pady=(20, 0))
             self.row += 1
         # Year labels
         year_2020_label = Label(self.scrollable_frame, text=YEAR_2020, fg=TEXT_COLOR, font=LABEL_FONT)\
@@ -564,6 +567,9 @@ class Counter:
             self.result_employment_2019.config(text=employment_2019_sum)
             self.result_employment_2018.config(text=employment_2018_sum)
             self.result_employment_2017.config(text=employment_2017_sum)
+
+        def take_percentage(percent):
+            print(percent.get())
 
     def set_result_table(self):
 
