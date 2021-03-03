@@ -116,6 +116,7 @@ class Counter:
 
     def set_item_table(self):
         """Create table for data with labels and inputs"""
+        percentage_value = 1.0
         self.company_number += 1
         self.income_list.append([0, 0, 0, 0])
         self.balance_list.append([0, 0, 0, 0])
@@ -570,6 +571,9 @@ class Counter:
 
         def take_percentage(percent):
             print(percent.get())
+
+            # only label * percentage_value and update result table with percentage_value
+            # change color (bg?) of labels when percentage value is typed
 
     def set_result_table(self):
 
