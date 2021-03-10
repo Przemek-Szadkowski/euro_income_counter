@@ -370,7 +370,7 @@ class Counter:
                     value_with_dot_coma = 0.00
                     self.window.focus_get().delete(0, 'end')  # remove value from input after typing not a number
                 finally:
-                    income_in_euro = round(value_with_dot_coma / actual_euro_rate, 2)
+                    income_in_euro = round((value_with_dot_coma / actual_euro_rate) * percentage_value, 2)
 
             else:
                 income_in_euro = 0.00
@@ -570,10 +570,25 @@ class Counter:
             self.result_employment_2017.config(text=employment_2017_sum)
 
         def take_percentage(percent):
-            print(percent.get())
+            if percent.get():
+                value = percent.get()
+                nonlocal percentage_value
+                try:
+                    percentage_value = float(value.replace(',', '.')) / 100
+                except ValueError:
+                    messagebox.showwarning(title="No chyba Ty...!",
+                                           message="Szwagru, ale proszę Cię - wpisuj tu tylko cyferki ;)")
+                    percentage_value = 1.0
+                    self.window.focus_get().delete(0, 'end')  # remove value from input after typing not a number
+            else:
+                percentage_value = 1.0
 
+            print(percentage_value)
+
+            # how to set new percentage value in income labels when they are not empty???
             # only label * percentage_value and update result table with percentage_value
             # change color (bg?) of labels when percentage value is typed
+            # menu with the key?
 
     def set_result_table(self):
 
